@@ -1,0 +1,6 @@
+@TestInvoiceWebAPI_HostAddress = http://localhost:5286
+
+GET {{TestInvoiceWebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
