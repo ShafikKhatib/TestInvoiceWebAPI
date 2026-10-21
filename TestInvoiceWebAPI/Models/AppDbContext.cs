@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TestInvoiceWebAPI.Models;
 
 public class AppDbContext : DbContext
 {
@@ -7,15 +8,20 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<Invoice> Invoices { get; set; }
-    public DbSet<InvoiceItem> InvoiceItems { get; set; }
+    public DbSet<Invoice> Invoices { get; set; } = null!;
+    public DbSet<InvoiceItem> InvoiceItems { get; set; } = null!;
+    public DbSet<AppUser> Users { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AppUser>()
+            .HasIndex(user => user.UserName)
+            .IsUnique();
+
         modelBuilder.Entity<Invoice>()
-            .HasMany(i => i.Items)
-            .WithOne(ii => ii.Invoice)
-            .HasForeignKey(ii => ii.InvoiceID)
+            .HasMany(invoice => invoice.Items)
+            .WithOne(item => item.Invoice)
+            .HasForeignKey(item => item.InvoiceID)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
